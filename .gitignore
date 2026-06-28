@@ -1,0 +1,9 @@
+# tooling / caches
+.impeccable/
+**/.impeccable/
+.DS_Store
+Thumbs.db
+
+# never publish raw (pre-masking) screenshots
+*.raw.png
+*.original.png

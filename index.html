@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI는 +가 아니라 ×다 · 영어 교사를 위한 AI 활용</title>
+<meta name="description" content="단순 검색 도구를 넘어, 수업의 전 과정을 바꾸는 도구로. Prompt·Context·Harness·Loop로 읽는 영어 교사의 AI 활용." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   AI는 +가 아니라 ×다 — 전자책(A4)
+   Typographic book. Serif body on paper, sans labels,
+   garnet as a single restrained accent. Not a slide port.
+   ============================================================ */
+:root{
+  --n-0:oklch(1 0 0); --n-50:oklch(.988 .003 60); --n-100:oklch(.972 .004 50);
+  --n-150:oklch(.948 .005 45); --n-200:oklch(.918 .006 40); --n-300:oklch(.865 .006 35);
+  --n-400:oklch(.770 .007 30); --n-500:oklch(.640 .008 28); --n-600:oklch(.520 .009 25);
+  --n-700:oklch(.450 .009 24); --n-800:oklch(.345 .008 23); --n-900:oklch(.255 .007 23);
+  --n-950:oklch(.190 .006 22); --n-1000:oklch(.135 .005 22);
+  --garnet-50:oklch(.965 .020 24); --garnet-100:oklch(.930 .035 23);
+  --garnet-200:oklch(.860 .060 23);
+  --garnet-400:oklch(.520 .135 21); --garnet-500:oklch(.440 .128 20);
+  --garnet-600:oklch(.380 .118 20); --garnet-700:oklch(.320 .100 19);
+  --green-700:oklch(.430 .110 150); --red-700:oklch(.470 .150 27);
+
+  --paper:oklch(.992 .003 70);        /* warm-white, tinted toward brand hue only */
+  --paper-edge:var(--n-150);
+  --ink:var(--n-950); --body:var(--n-900); --soft:var(--n-800);
+  --muted:var(--n-700); --faint:var(--n-500);
+  --line:var(--n-200); --line-soft:var(--n-150); --line-strong:var(--n-300);
+  --accent:var(--garnet-500); --accent-deep:var(--garnet-700); --accent-tint:var(--garnet-50);
+
+  --serif:"Noto Serif KR",ui-serif,Georgia,"Batang",serif;
+  --sans:"Pretendard","Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono","D2Coding",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --measure:39rem;          /* book reading column */
+  --pad-x:clamp(26px,8vw,76px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  font-family:var(--serif);
+  background:var(--paper-edge);
+  color:var(--body);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  line-height:1.5;
+}
+em{font-style:italic}
+::selection{background:var(--garnet-200)}
+
+/* ---------------- BOOK SHEET ---------------- */
+.book{
+  max-width:760px;margin:clamp(18px,4vw,52px) auto;
+  background:var(--paper);
+  box-shadow:0 1px 0 var(--n-200),0 28px 60px -34px oklch(.2 .02 25/.34),0 8px 22px -16px oklch(.2 .02 25/.2);
+  padding:clamp(40px,7vw,92px) var(--pad-x);
+  counter-reset:chap fig;
+}
+.leaf{padding:0}
+.leaf + .leaf{margin-top:clamp(48px,9vw,104px)}
+
+/* ---------------- TITLE PAGE ---------------- */
+.titlepage{min-height:clamp(560px,82vh,860px);display:flex;flex-direction:column;
+  justify-content:center;position:relative;text-align:left}
+.tp-label{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:clamp(26px,5vw,44px)}
+.tp-title{font-family:var(--serif);font-weight:900;line-height:1.04;letter-spacing:-.02em;
+  font-size:clamp(46px,10vw,92px);color:var(--ink);word-break:keep-all}
+.tp-title .op{color:var(--n-400);font-weight:500} .tp-title .x{color:var(--accent)}
+.tp-rule{width:64px;height:3px;background:var(--accent);margin:clamp(30px,5vw,46px) 0 clamp(22px,4vw,32px)}
+.tp-sub{font-family:var(--serif);font-size:clamp(18px,2.6vw,23px);color:var(--soft);
+  line-height:1.6;max-width:30ch;word-break:keep-all}
+.tp-epi{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.3vw,20px);
+  color:var(--muted);margin-top:clamp(40px,7vw,72px);max-width:34ch;line-height:1.7;word-break:keep-all}
+.tp-foot{font-family:var(--sans);margin-top:clamp(40px,7vw,76px);display:flex;flex-wrap:wrap;
+  gap:8px 30px;align-items:baseline;font-size:14px;color:var(--muted)}
+.tp-foot .author{font-weight:700;color:var(--ink);font-size:16px}
+.tp-foot .author .bx{color:var(--accent);margin-right:.4em}
+.tp-foot b{color:var(--soft);font-weight:600;margin-right:.45em}
+
+/* ---------------- TOC ---------------- */
+.toc h2{font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:30px}
+.toc ol{list-style:none;counter-reset:t}
+.toc li{counter-increment:t;border-bottom:1px solid var(--line-soft)}
+.toc li:first-child{border-top:1px solid var(--line-soft)}
+.toc a{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:14px;
+  padding:16px 2px;text-decoration:none;color:var(--ink);transition:color .18s,transform .2s}
+.toc a:hover{color:var(--accent);transform:translateX(8px)}
+.toc .tn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+.toc .tn::before{content:counter(t,decimal-leading-zero)}
+.toc .tt{font-family:var(--serif);font-size:clamp(17px,2.4vw,21px);font-weight:600;word-break:keep-all;
+  position:relative;overflow:hidden}
+.toc .tt::after{content:"";position:absolute;bottom:.34em;margin-left:10px;width:60%;
+  border-bottom:1px dotted var(--line-strong)}
+.toc .td{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:500;
+  display:none;white-space:nowrap}
+@media(min-width:640px){.toc .td{display:block}}
+
+/* ---------------- CHAPTER ---------------- */
+.chapter{counter-increment:chap}
+.ch-opener{margin-bottom:clamp(30px,5vw,46px)}
+.ch-no{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.ch-no::before{content:"제 " counter(chap) " 장";white-space:nowrap}
+.ch-no .lbl{color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:none}
+.ch-no .rule{height:1px;flex:1;background:var(--line)}
+.ch-title{font-family:var(--serif);font-weight:900;font-size:clamp(28px,5.2vw,44px);
+  line-height:1.14;letter-spacing:-.02em;color:var(--ink);word-break:keep-all;text-wrap:balance}
+.ch-title .x{color:var(--accent)}
+.ch-lead{font-family:var(--serif);font-size:clamp(18px,2.5vw,22px);line-height:1.62;color:var(--soft);
+  margin-top:20px;max-width:var(--measure);word-break:keep-all}
+.ch-lead b{font-weight:700;color:var(--ink)}
+
+/* ---------------- BODY PROSE ---------------- */
+.body{max-width:var(--measure)}
+.body p{font-family:var(--serif);font-size:clamp(16px,1.95vw,17.5px);line-height:1.92;
+  color:var(--body);margin:0 0 1.25em;word-break:keep-all;text-wrap:pretty;
+  hanging-punctuation:allow-end}
+.body p:last-child{margin-bottom:0}
+.body b,.body strong{font-weight:700;color:var(--ink)}
+.body .hi{color:var(--accent-deep);font-weight:700}
+.body .mono{font-family:var(--mono);font-size:.92em;letter-spacing:0;color:var(--accent-deep)}
+/* drop cap on the chapter's first body paragraph */
+.body.opens > p:first-of-type::first-letter{
+  float:left;font-family:var(--serif);font-weight:900;font-size:3.4em;line-height:.82;
+  color:var(--accent);margin:.04em .12em 0 0}
+
+/* section subhead (sans, scannable) */
+.body .subhead,.subhead{font-family:var(--sans);font-size:clamp(15px,1.9vw,16px);font-weight:700;
+  letter-spacing:.02em;color:var(--ink);margin:clamp(34px,5vw,48px) 0 16px;
+  display:flex;align-items:baseline;gap:11px;max-width:var(--measure);line-height:1.4}
+.subhead::before{content:"§";color:var(--accent);font-weight:700;flex:0 0 auto}
+
+/* ---------------- EPIGRAPH (was garnet pull-quote) ---------------- */
+.epigraph{max-width:var(--measure);margin:clamp(34px,5vw,50px) auto;text-align:center;
+  padding:clamp(26px,4vw,38px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.epigraph .mk{font-family:var(--serif);font-size:26px;color:var(--accent);line-height:1;margin-bottom:14px}
+.epigraph q{font-family:var(--serif);font-style:italic;font-size:clamp(21px,3.4vw,30px);
+  font-weight:500;line-height:1.32;color:var(--ink);quotes:none;word-break:keep-all;text-wrap:balance}
+.epigraph q .strike{position:relative;white-space:nowrap}
+.epigraph q .strike::after{content:"";position:absolute;left:-2px;right:-2px;top:54%;height:2px;
+  background:var(--accent);transform:rotate(-6deg)}
+
+/* ---------------- DISPLAY EQUATION (figure) ---------------- */
+.eqfig{max-width:var(--measure);margin:clamp(30px,4.5vw,42px) auto;
+  display:grid;grid-template-columns:1fr;gap:22px}
+@media(min-width:560px){.eqfig{grid-template-columns:1fr 1fr;gap:0}}
+.eqfig .e{padding:0 clamp(18px,3vw,30px);text-align:center}
+@media(min-width:560px){.eqfig .e + .e{border-left:1px solid var(--line)}}
+.eqfig .eq{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.5vw,44px);
+  letter-spacing:.01em;color:var(--ink);font-variant-numeric:tabular-nums}
+.eqfig .eq .op{color:var(--faint);font-weight:400;margin:0 .22em}
+.eqfig .eq .r{color:var(--accent)} .eqfig .e.zero .eq .r{color:var(--faint)}
+.eqfig .cap{font-family:var(--sans);font-size:14px;color:var(--muted);margin-top:14px;
+  line-height:1.6;word-break:keep-all}
+
+/* ---------------- FIGURE caption ---------------- */
+.figcap{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:14px;
+  max-width:var(--measure);line-height:1.55;word-break:keep-all}
+.figcap b{counter-increment:fig;color:var(--accent-deep);font-weight:700}
+.figcap b::before{content:"그림 " counter(fig) ". "}
+
+/* ---------------- STEPPER (Prompt→Context→Harness→Loop) ---------------- */
+.stepper{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto;
+  display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.step{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:baseline;
+  padding:18px 2px;border-bottom:1px solid var(--line)}
+.step .si{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);
+  grid-row:span 2;align-self:start;padding-top:4px}
+.step .sn{font-family:var(--serif);font-size:clamp(19px,2.6vw,23px);font-weight:700;color:var(--ink);
+  display:flex;align-items:baseline;gap:10px;word-break:keep-all}
+.step .sn .arrow{color:var(--accent);font-family:var(--sans);font-weight:400}
+.step .sd{font-family:var(--serif);font-size:15.5px;line-height:1.6;color:var(--muted);word-break:keep-all}
+.step .sd .tag{color:var(--accent-deep);font-weight:600}
+.step.dim .sn{color:var(--soft)} .step.dim .si{color:var(--faint)}
+
+.aside-note{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto;
+  font-family:var(--serif);font-size:clamp(16px,2vw,17px);line-height:1.75;color:var(--soft);
+  padding:18px 0 18px 24px;border-left:1px solid var(--accent);word-break:keep-all}
+.aside-note b{color:var(--ink);font-weight:700} .aside-note .hi{color:var(--accent-deep);font-weight:700}
+
+/* ---------------- JUXTA (before/after, parallel columns) ---------------- */
+.juxta{max-width:var(--measure);margin:clamp(30px,4.5vw,44px) auto;
+  display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:600px){.juxta{grid-template-columns:1fr 1fr;gap:0}}
+.col{padding:0}
+@media(min-width:600px){.col{padding:0 clamp(20px,3vw,30px)}.col:first-child{padding-left:0}
+  .col + .col{border-left:1px solid var(--line);padding-right:0}}
+.col .clab{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.col .clab::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--muted)}
+.col.bad .clab{color:var(--red-700)} .col.bad .clab::before{background:var(--red-700)}
+.col.good .clab{color:var(--accent-deep)} .col.good .clab::before{background:var(--accent)}
+.col h4{font-family:var(--serif);font-size:clamp(17px,2.2vw,19px);font-weight:700;line-height:1.4;
+  color:var(--ink);margin-bottom:14px;word-break:keep-all}
+.col h4.mono{font-family:var(--mono);font-size:14.5px;font-weight:600;line-height:1.55;color:var(--accent-deep)}
+.col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.col li{font-family:var(--serif);font-size:15.5px;line-height:1.62;color:var(--soft);
+  padding-left:22px;position:relative;word-break:keep-all}
+.col li b{color:var(--ink);font-weight:700}
+.col li::before{position:absolute;left:0;top:0;font-family:var(--sans);font-weight:700;font-size:14px}
+.col.bad li::before{content:"\2715";color:var(--red-700)}
+.col.good li::before{content:"\2713";color:var(--green-700)}
+.col.plain li::before{content:"\00B7";color:var(--accent);font-size:20px;top:-3px;left:2px}
+.col .verdict{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--sans);font-size:14px;font-weight:700;word-break:keep-all}
+.col.bad .verdict{color:var(--red-700)} .col.good .verdict{color:var(--accent-deep)}
+.col .verdict::before{content:"→ ";font-weight:400;color:var(--faint)}
+
+/* ---------------- FOOTNOTE ---------------- */
+sup.fn{font-family:var(--sans);font-size:.62em;font-weight:700;color:var(--accent);
+  vertical-align:super;line-height:0;margin-left:1px}
+.footnote{max-width:var(--measure);margin:clamp(20px,3vw,26px) auto 0;
+  padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--sans);font-size:13px;line-height:1.65;color:var(--muted);
+  display:grid;grid-template-columns:auto 1fr;gap:10px;word-break:keep-all}
+.footnote .fmk{color:var(--accent);font-weight:700}
+.footnote b{color:var(--soft);font-weight:600}
+.footnote a{color:var(--accent-deep);font-family:var(--mono);font-size:.92em;
+  text-decoration:none;border-bottom:1px solid var(--garnet-100)}
+.footnote i{font-style:italic}
+
+/* ---------------- ENUMERATED (limits / checklist) ---------------- */
+.enum{max-width:var(--measure);margin:clamp(26px,4vw,36px) auto;list-style:none;counter-reset:e}
+.enum li{counter-increment:e;display:grid;grid-template-columns:auto 1fr;gap:18px;
+  padding:16px 0;border-bottom:1px solid var(--line-soft)}
+.enum li:first-child{border-top:1px solid var(--line-soft)}
+.enum .en{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--accent);padding-top:3px}
+.enum .en::before{content:counter(e,decimal-leading-zero)}
+.enum .ec{font-family:var(--serif)}
+.enum .ec strong{display:block;font-size:clamp(16px,2.1vw,18px);font-weight:700;color:var(--ink);
+  margin-bottom:4px;word-break:keep-all}
+.enum .ec span{font-size:15.5px;line-height:1.66;color:var(--muted);word-break:keep-all}
+.enum .ec span b{color:var(--soft)}
+
+/* ---------------- CODE FIGURE (light, book) ---------------- */
+.codefig{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto}
+.codefig .frame{background:var(--n-50);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(22px,3vw,30px);overflow-x:auto}
+.codefig .fhead{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:16px;
+  padding-bottom:12px;border-bottom:1px dashed var(--line-strong);display:flex;align-items:center;gap:8px}
+.codefig .fhead::before{content:"";width:9px;height:9px;border-radius:99px;
+  border:1.5px solid var(--garnet-200);flex:0 0 auto}
+.codefig pre{font-family:var(--mono);font-size:clamp(12.5px,1.7vw,14.5px);line-height:1.95;
+  color:var(--n-900);white-space:pre-wrap;word-break:keep-all}
+.codefig .k{color:var(--accent-deep);font-weight:700}
+.codefig .s{color:var(--green-700);font-weight:600}
+.codefig .c{color:var(--faint)}
+
+/* ---------------- PHOTO (author workflow) ---------------- */
+.photo{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto}
+.photo .frame{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--n-50)}
+.photo img{display:block;width:100%;height:auto}
+.photo.empty .frame{border:1px dashed var(--line-strong);aspect-ratio:16/10;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:30px}
+.photo.empty .ph-k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent)}
+.photo.empty .ph-d{font-family:var(--sans);font-size:13.5px;line-height:1.55;color:var(--muted);
+  max-width:34ch;word-break:keep-all}
+.photo.empty .ph-f{font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* ---------------- LOOP CYCLE (figure) ---------------- */
+.cyclefig{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto}
+.cyclewrap{display:grid;grid-template-columns:1fr;gap:clamp(26px,4vw,40px);align-items:center}
+@media(min-width:640px){.cyclewrap{grid-template-columns:minmax(260px,330px) 1fr}}
+.cycle{position:relative;width:100%;max-width:330px;aspect-ratio:1.08/1;margin:0 auto}
+.cycle svg{position:absolute;inset:0;width:100%;height:100%}
+.cyc{position:absolute;width:48%;padding:11px 10px;background:var(--paper);border:1px solid var(--line-strong);
+  border-radius:8px;text-align:center}
+.cyc .s{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.03em}
+.cyc .t{font-family:var(--serif);font-size:14px;font-weight:600;margin-top:4px;line-height:1.32;
+  word-break:keep-all;color:var(--ink)}
+.cyc.n1{top:0;left:50%;transform:translateX(-50%)}
+.cyc.n2{top:50%;right:0;transform:translateY(-50%)}
+.cyc.n3{bottom:0;left:50%;transform:translateX(-50%)}
+.cyc.n4{top:50%;left:0;transform:translateY(-50%)}
+.cyc.key{border-color:var(--accent);border-width:1.5px;background:var(--accent-tint)}
+.loopaside h4{font-family:var(--serif);font-size:clamp(18px,2.4vw,21px);font-weight:700;color:var(--ink)}
+.loopaside h4 em{font-style:italic;color:var(--accent)}
+.loopaside .vs{display:flex;flex-direction:column;gap:13px;margin-top:16px}
+.loopaside .vs div{font-family:var(--serif);font-size:15.5px;line-height:1.62;color:var(--soft);
+  padding-left:20px;position:relative;word-break:keep-all}
+.loopaside .vs div::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;
+  border-radius:2px;background:var(--accent)}
+.loopaside .vs b{color:var(--ink);font-weight:700}
+
+/* ---------------- FEATURE + LIST (application) ---------------- */
+.applic{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto;
+  display:grid;grid-template-columns:1fr;gap:clamp(24px,4vw,36px)}
+@media(min-width:640px){.applic{grid-template-columns:1fr 1fr}}
+.feat .fn{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent)}
+.feat h4{font-family:var(--serif);font-size:clamp(24px,4vw,32px);font-weight:900;line-height:1.12;
+  letter-spacing:-.02em;margin:10px 0 12px;color:var(--ink);word-break:keep-all}
+.feat p{font-family:var(--serif);font-size:15.5px;line-height:1.66;color:var(--muted);word-break:keep-all}
+.feat .tagline{font-family:var(--sans);margin-top:14px;font-size:13px;font-weight:700;color:var(--accent-deep)}
+.wlist{display:flex;flex-direction:column}
+.wlist .row{padding:13px 0;border-top:1px solid var(--line-soft)}
+.wlist .row:last-child{border-bottom:1px solid var(--line-soft)}
+.wlist .row h5{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink);word-break:keep-all}
+.wlist .row p{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:3px;word-break:keep-all}
+
+/* ---------------- PIPELINE (tools/format) ---------------- */
+.pipe{max-width:var(--measure);margin:clamp(28px,4vw,40px) auto}
+.pipe-row{display:grid;grid-template-columns:1fr;gap:7px 16px;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--line-soft)}
+@media(min-width:540px){.pipe-row{grid-template-columns:120px 1fr}}
+.pipe-row:first-child{border-top:1px solid var(--line-soft)}
+.pipe-row .stage{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);word-break:keep-all}
+.pipe-row .chain{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.fmt{font-family:var(--mono);font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:6px;
+  border:1px solid var(--line-strong);color:var(--soft)}
+.fmt.ai{border-color:var(--green-700);color:var(--green-700)}
+.fmt.tool{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-tint)}
+.fmt.bad{border-color:var(--red-700);color:var(--red-700)}
+.pipe-row .to{color:var(--faint);font-size:14px}
+
+/* ---------------- CLOSE ---------------- */
+.close-line{font-family:var(--serif);font-weight:900;font-size:clamp(28px,5vw,42px);line-height:1.16;
+  letter-spacing:-.02em;color:var(--ink);max-width:18ch;word-break:keep-all;text-wrap:balance;
+  margin:clamp(30px,5vw,48px) 0}
+.close-line .x{color:var(--accent)}
+.principles{max-width:var(--measure);list-style:none;counter-reset:p;
+  display:flex;flex-direction:column}
+.principles li{counter-increment:p;display:grid;grid-template-columns:auto 1fr;gap:20px;
+  padding:20px 0;border-top:1px solid var(--line)}
+.principles li:last-child{border-bottom:1px solid var(--line)}
+.principles .pn{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);padding-top:5px}
+.principles .pn::before{content:counter(p,decimal-leading-zero)}
+.principles .pt{font-family:var(--serif)}
+.principles .pt strong{display:block;font-size:clamp(18px,2.4vw,21px);font-weight:700;color:var(--ink);
+  margin-bottom:5px;word-break:keep-all}
+.principles .pt .stage{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}
+.principles .pt span{font-size:15.5px;line-height:1.64;color:var(--muted);word-break:keep-all}
+
+.colophon{margin-top:clamp(40px,7vw,64px);padding-top:22px;border-top:1px solid var(--line);
+  font-family:var(--sans);font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;
+  justify-content:space-between;gap:12px}
+.colophon b{color:var(--soft)}
+.colophon .mk .bx{color:var(--accent);font-weight:700;margin-right:.4em}
+
+/* ---------------- MINI TOC (wide reading aid, screen only) ---------------- */
+.minitoc{position:fixed;top:50%;left:max(14px,calc(50vw - 540px));transform:translateY(-50%);
+  z-index:20;display:none;flex-direction:column;gap:10px;max-width:140px}
+@media(min-width:1140px){.minitoc{display:flex}}
+.minitoc a{font-family:var(--sans);display:flex;align-items:center;gap:9px;font-size:12px;
+  color:var(--faint);text-decoration:none;line-height:1.25;transition:color .18s}
+.minitoc a .dot{width:6px;height:6px;border-radius:99px;background:var(--line-strong);flex:0 0 auto;transition:all .18s}
+.minitoc a:hover{color:var(--soft)}
+.minitoc a.active{color:var(--accent-deep);font-weight:700}
+.minitoc a.active .dot{background:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+
+/* ---------------- PRINT (A4 book) ---------------- */
+@page{size:A4;margin:22mm 20mm 20mm}
+@page{ @bottom-center{ content:counter(page); font-family:"Noto Serif KR",serif; font-size:9.5pt; color:#9a8e8e } }
+@page{ @top-center{ content:"AI는 +가 아니라 ×다"; font-family:"Pretendard",sans-serif; font-size:8pt; letter-spacing:.08em; color:#bcafaf } }
+@page:first{ @top-center{content:""} @bottom-center{content:""} }
+@media print{
+  html,body{background:#fff}
+  .minitoc{display:none!important}
+  .book{max-width:none;margin:0;box-shadow:none;padding:0;background:#fff;font-size:11.2pt}
+  .titlepage{min-height:auto;height:248mm;break-after:page}
+  .toc{break-after:page}
+  .chapter{break-before:page}
+  .leaf + .leaf{margin-top:0}
+  .epigraph,.eqfig,.juxta,.codefig,.cyclefig,.cyclewrap,.applic,.pipe,.stepper,.enum,.principles,
+  .col,.step,.footnote,.aside-note,.feat,.wlist,.photo{break-inside:avoid}
+  .ch-opener,.subhead,h4,h5{break-after:avoid}
+  .body.opens > p:first-of-type::first-letter{color:#5a1620}
+  .cyc.key,.fmt.tool,.codefig .frame,.eqfig .eq .r{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{color:inherit;border:0}
+}
+</style>
+</head>
+<body>
+
+<article class="book">
+
+  <!-- ====================== TITLE PAGE ====================== -->
+  <section class="leaf titlepage">
+    <p class="tp-label">영어 교사를 위한 AI 활용</p>
+    <h1 class="tp-title">AI는 <span class="op">+</span>가 아니라<br><span class="x">×</span>다</h1>
+    <div class="tp-rule" aria-hidden="true"></div>
+    <p class="tp-sub">단순 검색·질문 도구를 넘어,<br>수업의 전 과정을 바꾸는 도구로.</p>
+    <p class="tp-epi">"입력을 키우면, AI는 그것을 곱한다."</p>
+    <div class="tp-foot">
+      <span class="author"><span class="bx">×</span>Chano T.</span>
+      <span><b>대상</b>AI 활용에 관심 있는 영어 강사</span>
+      <span><b>구성</b>Prompt · Context · Harness · Loop</span>
+    </div>
+  </section>
+
+  <!-- ====================== TOC ====================== -->
+  <nav class="leaf toc" aria-label="목차">
+    <h2>차례</h2>
+    <ol>
+      <li><a href="#ch1"><span class="tn"></span><span class="tt">더하기가 아니라 곱하기</span><span class="td">입력이 0이면 결과도 0이다</span></a></li>
+      <li><a href="#ch2"><span class="tn"></span><span class="tt">네 단계의 지도</span><span class="td">Prompt → Context → Harness → Loop</span></a></li>
+      <li><a href="#ch3"><span class="tn"></span><span class="tt">Prompt, 그 의의와 한계</span><span class="td">페르소나 신화와 세 가지 벽</span></a></li>
+      <li><a href="#ch4"><span class="tn"></span><span class="tt">Context, 결과를 가르는 맥락</span><span class="td">같은 질문, 다른 결과</span></a></li>
+      <li><a href="#ch5"><span class="tn"></span><span class="tt">Harness, 환경을 설계하라</span><span class="td">대화를 미리 만들어 두기</span></a></li>
+      <li><a href="#ch6"><span class="tn"></span><span class="tt">Loop, 점점 더 잘하게</span><span class="td">스스로 개선되는 구조</span></a></li>
+      <li><a href="#ch7"><span class="tn"></span><span class="tt">영어 교사의 실전</span><span class="td">다섯 가지 업무에 얹기</span></a></li>
+      <li><a href="#ch8"><span class="tn"></span><span class="tt">지금 당장 하는 법</span><span class="td">막연한 다짐 말고 행동으로</span></a></li>
+      <li><a href="#ch9"><span class="tn"></span><span class="tt">한 걸음 더: 필자는 어떻게 작업하는가</span><span class="td">CLI · Harness · Loop · E2E</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- ====================== CH1 ====================== -->
+  <section class="leaf chapter" id="ch1">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">곱셈의 논리</span><span class="rule"></span></div>
+      <h2 class="ch-title">더하기가 아니라 곱하기</h2>
+      <p class="ch-lead">AI는 당신의 일에 기능 하나를 <b>더하는</b> 도구가 아니라, 이미 가진 역량을 <b>몇 배로 키우는</b> 곱셈의 도구다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>많은 사람이 AI를 '기능 추가'로 받아들인다. 원래 하던 일에 편리한 도구 하나를 보태는 정도로 말이다. 그러나 AI의 진짜 성격은 덧셈보다 곱셈에 가깝다. 당신이 가진 기준과 자료, 노하우라는 값에 AI가 곱해지면서 결과의 규모 자체가 달라진다.</p>
+      <p>곱셈에는 분명한 함의가 하나 있다. 어떤 수에 0을 곱하면 결과는 언제나 0이라는 점이다. 아무리 뛰어난 AI라도 당신이 넣는 입력이 비어 있으면, 돌아오는 결과도 비어 있다.</p>
+    </div>
+
+    <figure class="eqfig">
+      <div class="e zero"><div class="eq">0<span class="op">×</span>AI<span class="op">=</span><span class="r">0</span></div>
+        <figcaption class="cap">맥락 없는 빈 질문은 아무리 좋은 AI라도 평범한 결과로 돌아온다.</figcaption></div>
+      <div class="e"><div class="eq">10<span class="op">×</span>AI<span class="op">=</span><span class="r">∞</span></div>
+        <figcaption class="cap">당신의 기준·자료·노하우를 넣을수록 AI는 그 값을 몇 배로 키운다.</figcaption></div>
+    </figure>
+    <p class="figcap"><b></b>입력의 크기가 결과의 크기를 결정하는 곱셈의 구조.</p>
+
+    <div class="body">
+      <p>그래서 정말 중요한 질문은 "어떤 AI를 쓰느냐"가 아니다. <span class="hi">어떻게 곱셈을 적용할 것인가</span>이다. 한 번의 질문에서 시작해, 작업 환경을 통째로 설계하는 단계와 스스로 개선되는 구조에 이르기까지. 이 책은 그 곱셈을 키우는 길을 차례로 따라간다.</p>
+    </div>
+  </section>
+
+  <!-- ====================== CH2 ====================== -->
+  <section class="leaf chapter" id="ch2">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">전체 지도</span><span class="rule"></span></div>
+      <h2 class="ch-title">네 단계의 지도</h2>
+      <p class="ch-lead">AI 활용은 네 단계로 깊어진다. 한 번의 질문에서 시작해, 결국 스스로 개선되는 구조에 이른다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>AI를 쓰는 방식은 한 자리에 머물지 않는다. 처음에는 한 번의 질문(Prompt)으로 시작하지만, 무엇을 알려 주느냐(Context)에 따라 결과가 갈리고, 그 맥락을 환경에 심어 두면(Harness) 매번의 준비가 사라지며, 피드백을 다시 넣는 구조(Loop)를 갖추면 쓸수록 좋아진다.</p>
+    </div>
+
+    <figure class="stepper">
+      <div class="step"><span class="si">01</span><span class="sn">Prompt <span class="arrow">→</span></span><span class="sd">한 번의 질문. 꼭 필요하지만 한계가 뚜렷하다. <span class="tag">시작점</span></span></div>
+      <div class="step"><span class="si">02</span><span class="sn">Context <span class="arrow">→</span></span><span class="sd">무엇을 알려 주는가. 결과를 바꾸는 진짜 곱셈의 시작. <span class="tag">× 키우기</span></span></div>
+      <div class="step dim"><span class="si">03</span><span class="sn">Harness <span class="arrow">→</span></span><span class="sd">질문하는 환경을 미리 설계해 맥락을 영구화한다. <span class="tag">AI를 경주마로</span></span></div>
+      <div class="step dim"><span class="si">04</span><span class="sn">Loop</span><span class="sd">매번 더 잘하게. 스스로 개선되는 구조. <span class="tag">궁극의 자가개선</span></span></div>
+    </figure>
+    <p class="figcap"><b></b>한 번의 질문에서 자가개선 구조까지, AI 활용의 네 단계.</p>
+
+    <p class="aside-note">이 책은 <b>Prompt와 Context를 깊게</b> 다루고, Harness와 Loop는 개념을 잡을 만큼만 가볍게 '찍먹'한다. 앞의 두 단계만 제대로 익혀도 매주의 작업이 달라지기 때문이다.</p>
+  </section>
+
+  <!-- ====================== CH3 ====================== -->
+  <section class="leaf chapter" id="ch3">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">Deep Dive · Prompt</span><span class="rule"></span></div>
+      <h2 class="ch-title">Prompt, 그 의의와 한계</h2>
+      <p class="ch-lead">"너는 15년차 영어 교사야"라고 역할을 부여하면 답이 똑똑해진다는 통념. 정확도 면에서는 사실이 아니다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>역할을 부여하면 AI가 더 전문가다운 답을 줄 것 같다. 널리 퍼진 믿음이지만, 정확도 면에서는 사실상 의미가 없다. 페르소나는 말투와 어휘, 톤을 바꿀 뿐 지식과 추론력을 끌어올리지 않는다. 오히려 페르소나를 유지하는 데 주의가 분산되어 추론이 저하되기도 한다.<sup class="fn">1</sup></p>
+    </div>
+
+    <div class="juxta">
+      <div class="col bad">
+        <div class="clab">통념</div>
+        <h4>역할·페르소나를 주면 답이 똑똑해진다</h4>
+        <ul>
+          <li>말투·어휘·톤만 흉내 낼 뿐, <b>지식·추론력은 늘지 않는다</b></li>
+          <li>결과는 전문가 말투로 포장된 오답, 곧 '잘 차려입은 오류'</li>
+          <li>페르소나 유지에 주의가 분산돼 추론은 오히려 저하</li>
+        </ul>
+      </div>
+      <div class="col good">
+        <div class="clab">사실</div>
+        <h4>바꾸는 건 '누구인 척'이 아니라 '무엇을 아느냐'</h4>
+        <ul>
+          <li>전문가 페르소나로는 정확도가 <b>유의미하게 오르지 않는다</b></li>
+          <li>모델 안에는 이미 잘 설계된 <b>시스템 프롬프트</b>가 있다</li>
+          <li>페르소나가 바꾸는 건 <b>스타일</b>이지 정확도가 아니다</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footnote">
+      <span class="fmk">1</span>
+      <span><b>Wharton GenAI Labs, <i>Playing Pretend</i>.</b> 6개 모델(GPQA·MMLU-Pro)을 검증한 결과, 전문가 페르소나는 정확도를 높이지 못했다. <a href="https://arxiv.org/abs/2512.05858">arXiv:2512.05858</a></span>
+    </div>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">프롬프트만 쓸 때 부딪히는 세 가지 벽</p>
+      <p>페르소나가 핵심이 아니라면, 프롬프트의 진짜 한계는 어디에 있을까. 한 번의 질문만으로 일하려 하면 매번 같은 벽에 부딪힌다.</p>
+    </div>
+
+    <ol class="enum">
+      <li><span class="en"></span><span class="ec"><strong>매번 처음부터</strong><span>학년·시험 유형·난이도를, 질문할 때마다 다시 설명해야 한다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>결과가 들쭉날쭉</strong><span>같은 질문에도 매번 다른 결과. AI가 빈자리를 <b>추측</b>으로 메우기 때문이다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>내 기준을 모른다</strong><span>우리 반 수준, 내 출제 스타일과 금지 규칙을 AI는 알 길이 없다.</span></span></li>
+    </ol>
+
+    <div class="body">
+      <p>세 가지 벽의 원인은 결국 하나다. <span class="hi">맥락(Context)이 빠져 있다는 것.</span> 그래서 다음 장의 주제는 자연스럽게 Context가 된다.</p>
+    </div>
+  </section>
+
+  <!-- ====================== CH4 ====================== -->
+  <section class="leaf chapter" id="ch4">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">Deep Dive · Context</span><span class="rule"></span></div>
+      <h2 class="ch-title">Context, 결과를 가르는 맥락</h2>
+      <p class="ch-lead">결과를 바꾸는 건 모델이 아니라 맥락이다. Context는 AI에게 '답지'를 쥐어 주는 일이다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>같은 모델에 같은 지문, 같은 질문을 넣어도 결과는 완전히 달라질 수 있다. 변수는 단 하나, 맥락의 유무다. 같은 ChatGPT 혹은 Claude에 같은 수능 빈칸 소재를 주더라도, 맥락이 있느냐 없느냐에 따라 전혀 다른 문제가 나온다. 핵심은 간단하다. <span class="hi">Context는 AI에게 답지를 쥐어 준다.</span></p>
+    </div>
+
+    <p class="epigraph"><q>같은 AI, 같은 질문, 맥락 하나로 갈린다.</q></p>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">"수능 빈칸 문제 만들어줘"의 전과 후</p>
+      <p>맥락의 유무가 결과를 어떻게 가르는지는 실제 작업으로 보면 분명해진다.</p>
+    </div>
+
+    <div class="juxta">
+      <div class="col bad">
+        <div class="clab">Before · 프롬프트만</div>
+        <h4 class="mono">"지문으로 빈칸 문제 만들어줘"</h4>
+        <ul>
+          <li>본문 구절을 그대로 빈칸 처리한 단순 암기식</li>
+          <li>오답이 엉뚱하다: "하늘 색깔", "쉽게 돈 버는 법"</li>
+          <li>매력도 0이라 실제 시험 대비엔 쓸모가 없다</li>
+        </ul>
+        <div class="verdict">써먹을 수 없는 문제</div>
+      </div>
+      <div class="col good">
+        <div class="clab">After · 맥락 추가</div>
+        <h4>난이도·오답 규칙·출력 형식을 명시</h4>
+        <ul>
+          <li>빈칸은 주제 논리에 걸리도록, 추론을 요구한다</li>
+          <li>오답에 반대 논리(본문 키워드)와 지나친 일반화를 섞는다</li>
+          <li>정답은 핵심 메시지를 학술적으로 재진술한 문장</li>
+        </ul>
+        <div class="verdict">시험 규격 문제 + 오답 해설</div>
+      </div>
+    </div>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">좋은 맥락의 구조: 페르소나보다 제약·예시·형식</p>
+      <p>맥락을 잘 준다는 건 길게 쓰는 일이 아니다. '교사인 척'을 시키는 대신, 규칙과 기준과 형식을 정확히 주는 일이다.</p>
+    </div>
+
+    <ol class="enum">
+      <li><span class="en"></span><span class="ec"><strong>제약 &gt; 페르소나</strong><span>'교사인 척'이 아니라 규칙과 기준을 준다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>형용사보다 예시</strong><span>좋은 문제 한 개를 붙여 기준으로 삼게 한다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>출력 형식 고정</strong><span>HTML·PDF로 바로 붙여넣을 수 있게 형식을 지정한다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>금지 규칙</strong><span>하지 말 것을 명시한다. AI는 그냥 두면 무조건 과하게 더한다.</span></span></li>
+    </ol>
+
+    <p class="aside-note"><b>맥락은 맨 앞이나 맨 뒤에 두라.</b> 긴 맥락의 <i>중간</i>은 모델이 잘 읽지 않는다(<i>Lost in the Middle</i>, Stanford). 학년·시험 유형·난이도·금지 같은 핵심 규칙은 문서의 <span class="hi">처음이나 끝</span>에 배치하는 편이 안전하다.</p>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">한 번 쓰고 계속 재사용하는 맥락 블록</p>
+      <p>좋은 맥락은 매번 새로 쓰는 글이 아니라, 한 번 정리해 두고 계속 재사용하는 자산이다. 아래는 영어 교사용 맥락 블록의 한 예다.</p>
+    </div>
+
+    <figure class="codefig">
+      <div class="frame">
+        <div class="fhead">teacher-context.md</div>
+<pre><span class="c"># [SYSTEM CONTEXT: 영어 교사 어시스턴트]</span>
+<span class="k">대상</span>      일반고 고2, 모고 평균 3등급 학생
+<span class="k">시험 유형</span> 수능/모고 빈칸추론(31–34)
+<span class="k">어휘·문법</span> 교육과정 2500단어 내외 / 관계사·양보 부사절 위주
+<span class="k">출제 규칙</span> 변형 시 동의어로 20%+ 재진술, 빈칸은 주제 논리에 적합하게
+<span class="k">선지 생성</span> '반대 논리(키워드 포함)'·'지나친 일반화' 각 1개 필수
+<span class="k">출력 형식</span> <span class="s">[지문] → [어휘] → [문제] → [정답 + 오답별 매력도 해설]</span>
+<span class="k">금지</span>      지문 독해 없이 배경지식만으로 풀리는 문제 금지</pre>
+      </div>
+      <figcaption class="figcap"><b></b>한 번 저장해 두고 매 세션에 붙여 쓰는 영어 교사용 맥락 블록.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ====================== CH5 ====================== -->
+  <section class="leaf chapter" id="ch5">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">Deep Dive · Harness</span><span class="rule"></span></div>
+      <h2 class="ch-title">Harness, 환경을 설계하라</h2>
+      <p class="ch-lead">Prompt가 한 번의 질문이라면, Harness는 그 질문을 던지는 작업 환경 자체를 미리 설계하는 일이다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>맥락 블록을 매번 붙여넣는 것조차 번거롭다. Harness는 그 맥락을 환경에 영구히 심어, 매번의 준비를 0으로 만든다. GPTs, ChatGPT, Claude의 Project도 대화 환경을 미리 만들어 두는 가벼운 하네스이다.</p>
+    </div>
+
+    <div class="juxta">
+      <div class="col good">
+        <div class="clab">예시 · 빈칸문제 생성기</div>
+        <h4>GPTs · Project / Claude Project</h4>
+        <ul>
+          <li>지식 파일에 작년 모고 PDF, 수능특강 지문, 내 해설 3개를 올린다</li>
+          <li>지시문에 앞 장의 맥락 블록 등 AI가 읽을 문서를 저장한다</li>
+          <li>이후 "이 지문으로 빈칸 문제 2개 생성해"만 입력하면 끝이다</li>
+        </ul>
+      </div>
+      <div class="col plain">
+        <div class="clab">핵심</div>
+        <h4>Prompt는 한 번의 질문,<br>Harness는 작업 환경의 설계</h4>
+        <ul>
+          <li>설정 한 번으로 모든 세션에서 곧바로 작업한다</li>
+          <li>Prompt의 '매번 처음부터'라는 귀찮음이 <b>0</b>이 된다</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CH6 ====================== -->
+  <section class="leaf chapter" id="ch6">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">Deep Dive · Loop</span><span class="rule"></span></div>
+      <h2 class="ch-title">Loop, 점점 더 잘하게</h2>
+      <p class="ch-lead">Loop는 한 번의 좋은 결과가 아니라, 매번 더 나아지는 구조를 만드는 일이다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>AI가 만든 결과를 교사가 검수하고 고친다. 여기서 멈추면 그 수정은 한 번 쓰고 사라진다. Loop는 그 피드백을 버리지 않고 맥락에 적어 넣어, 다음 생성에 자동으로 반영되게 만드는 순환이다.</p>
+    </div>
+
+    <figure class="cyclefig">
+      <div class="cyclewrap">
+        <div class="cycle" role="img" aria-label="자가개선 순환: 생성, 검수, 규칙 저장, 자동 반영">
+          <svg viewBox="0 0 520 480" fill="none" aria-hidden="true">
+            <circle cx="260" cy="240" r="172" stroke="var(--line-strong)" stroke-width="2" stroke-dasharray="6 10"/>
+            <path d="M432 232 l0 18 l-9 -9 z" fill="var(--accent)"/>
+          </svg>
+          <div class="cyc n1"><div class="s">STEP 1</div><div class="t">AI가 문제 생성</div></div>
+          <div class="cyc n2"><div class="s">STEP 2</div><div class="t">교사가 검수·수정</div></div>
+          <div class="cyc n3 key"><div class="s">STEP 3</div><div class="t">규칙을 기억·저장</div></div>
+          <div class="cyc n4"><div class="s">STEP 4</div><div class="t">다음 생성에 반영</div></div>
+        </div>
+        <div class="loopaside">
+          <h4>Human <em>in</em> vs <em>on</em> the Loop</h4>
+          <div class="vs">
+            <div><b>In the Loop</b> · AI가 제안하고 교사가 매번 승인한다. QA가 꼭 필요한 중요한 작업에 쓴다.</div>
+            <div><b>On the Loop</b> · AI가 실행하고 교사는 예외만 점검한다. 100% AI가 주도하는 작업에 쓴다.</div>
+            <div>피드백을 버리지 않고 <b>맥락에 적어 넣는 것</b>이 자기개선의 핵심이다.</div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="figcap"><b></b>생성 · 검수 · 저장 · 반영으로 이어지는 자가개선 순환.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ====================== CH7 ====================== -->
+  <section class="leaf chapter" id="ch7">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">Application · 실전</span><span class="rule"></span></div>
+      <h2 class="ch-title">영어 교사의 실전</h2>
+      <p class="ch-lead">Prompt·Context·Harness·Loop를 수업 워크플로에 그대로 얹는다. AI의 곱셈이 가장 크게 작동하는 곳부터.</p>
+    </header>
+
+    <div class="body opens">
+      <p>네 단계의 개념을 익혔다면, 이제 실제 업무에 적용할 차례다. 영어 교사의 일 가운데 AI의 곱셈이 가장 크게 작동하는 곳은 문제 출제와 변형이다. 나머지 업무도 같은 원리로 확장된다.</p>
+    </div>
+
+    <div class="applic">
+      <div class="feat">
+        <div class="fn">가장 큰 ×</div>
+        <h4>문제 출제와<br>변형 문제</h4>
+        <p>원본 출제부터 기존 문항 변형까지. 5대 변형 유형(순서·삽입·어법·어휘·무관문장)별 제약을 맥락에 넣으면 출제 품질이 안정된다.</p>
+        <div class="tagline">오답 설계 · 난이도 조정</div>
+      </div>
+      <div class="wlist">
+        <div class="row"><h5>지문 분석·요약</h5><p>독해 지문의 구조·주제·논리 분해</p></div>
+        <div class="row"><h5>학생 개별 피드백</h5><p>학생 맥락을 반영한 맞춤 코멘트</p></div>
+        <div class="row"><h5>수능 유형별 해설</h5><p>유형 해설과 모범답안 제작</p></div>
+        <div class="row"><h5>핸드아웃·보충자료</h5><p>보충자료 초안의 빠른 생성</p></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">한 줄 질문에 맥락 한 겹을 더하라</p>
+      <p>거창한 변화가 아니어도 된다. 지금 쓰는 프롬프트에 맥락 한 겹만 얹어도 출력이 안정된다.</p>
+    </div>
+
+    <div class="juxta">
+      <div class="col bad">
+        <div class="clab">오늘의 프롬프트</div>
+        <h4 class="mono">"이 지문 빈칸 문제 만들어줘"</h4>
+        <ul>
+          <li>AI가 여덟 가지(학년·난이도·오답규칙·형식…)를 전부 추측한다</li>
+          <li>그래서 매번 다른 결과가 나온다</li>
+        </ul>
+        <div class="verdict">불안정한 출력</div>
+      </div>
+      <div class="col good">
+        <div class="clab">+ 맥락 한 겹</div>
+        <h4 class="mono">"고2 3등급·빈칸추론, 반대논리 오답 1개 포함, [지문]→[문제]→[해설] 형식"</h4>
+        <ul>
+          <li>추측이 사라지고 규격에 맞는 안정적 출력이 된다</li>
+          <li>오늘 당장, 내가 쓰던 프롬프트에 바로 적용할 수 있다</li>
+        </ul>
+        <div class="verdict">규격에 맞는 문제</div>
+      </div>
+    </div>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">내용이 좋아도 디자인이 0이면 × = 0</p>
+      <p>곱셈의 논리는 결과물의 형태에도 그대로 적용된다. 내용이 아무리 좋아도 전달하는 디자인이 0이면 전체 곱은 0이 된다. AI가 만든 'AI 슬롭'을 손보지 않은 채 학생과 학부모에게 내보내지 말아야 한다.</p>
+    </div>
+
+    <div class="juxta">
+      <div class="col bad">
+        <div class="clab">슬롭 신호</div>
+        <ul>
+          <li>줄표(—) 남발, 항상 세 개짜리 불릿, 이모지 누수</li>
+          <li>"게다가·또한·결론적으로" 같은 기계적 연결어</li>
+          <li>7–8pt로 욱여넣은 본문, 의미 없는 삽화가 지면의 30%</li>
+        </ul>
+        <div class="verdict">신뢰도 하락</div>
+      </div>
+      <div class="col good">
+        <div class="clab">고치는 법</div>
+        <ul>
+          <li>실제 사실·예시·내 의견을 넣어 '말하듯' 다시 쓴다</li>
+          <li>제목·본문·예시의 위계와 여백, 채점란을 갖춘 학습지로</li>
+          <li>국·영문 폰트를 통일하고 강조색은 한 가지만 쓴다</li>
+        </ul>
+        <div class="verdict">내용 × 디자인 = 전달력</div>
+      </div>
+    </div>
+
+    <div class="body">
+      <p class="subhead" style="display:flex">내용은 텍스트로, 조판은 도구로</p>
+      <p>형식에도 맥락을 적용한다. AI는 자신이 잘 다루는 형식, 곧 마크다운과 HTML로 주고받을 때 가장 강하다. 내용은 텍스트로 받고, 조판은 도구에 맡기면 된다.</p>
+    </div>
+
+    <figure class="pipe">
+      <div class="pipe-row"><span class="stage">맥락 블록</span><span class="chain"><span class="fmt ai">.md</span><span class="to">→</span><span class="fmt">어떤 챗에든 붙여넣기</span></span></div>
+      <div class="pipe-row"><span class="stage">슬라이드</span><span class="chain"><span class="fmt ai">.md 초안</span><span class="to">→</span><span class="fmt ai">HTML/CSS</span><span class="to">→</span><span class="fmt tool">브라우저 + PDF</span></span></div>
+      <div class="pipe-row"><span class="stage">문제·시험지</span><span class="chain"><span class="fmt ai">.md 내용</span><span class="to">→</span><span class="fmt tool">HWP / 워드 조판</span><span class="to">·</span><span class="fmt bad">.hwp 직접생성 ✕</span></span></div>
+      <div class="pipe-row"><span class="stage">시각자료</span><span class="chain"><span class="fmt ai">.md 내용</span><span class="to">→</span><span class="fmt tool">HTML/CSS</span></span></div>
+    </figure>
+
+    <p class="aside-note">업계도 <span class="hi">DESIGN.md</span>, <span class="hi">AGENTS.md</span> 같은 '맥락 파일'을 표준으로 쓴다. AI에게 디자인 규칙을 한 번 정해 주면 매번 일관되게 따른다.<br><b>이 전자책 역시 그렇게 만든 결과다.</b></p>
+  </section>
+
+  <!-- ====================== CH8 ====================== -->
+  <section class="leaf chapter" id="ch8">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">So What · 지금 당장</span><span class="rule"></span></div>
+      <h2 class="ch-title">지금 당장 하는 법</h2>
+      <p class="ch-lead">개념은 충분하다. 막연한 다짐 대신, 시간이 날 때 다음 여섯 가지를 순서대로 해 보자. '문제 변형'부터 시작하길 권한다.</p>
+    </header>
+
+    <ol class="enum">
+      <li><span class="en"></span><span class="ec"><strong>업무 한 개 고르기</strong><span>'문제 변형'부터 추천한다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>맥락 블록 작성</strong><span>학년·시험유형·난이도·금지, 네 줄이면 충분하다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>Project에 저장</strong><span>GPT·Claude Project에 자료를 최소 세 개 이상 올린다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>규칙을 다시 적어 넣기</strong><span>수정한 규칙을 맥락에 반영한다. 이것이 Loop다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>형식을 도구에 맡기기</strong><span>출력은 .md로 받아 PDF로 변환한다.</span></span></li>
+      <li><span class="en"></span><span class="ec"><strong>디자인 슬롭 점검</strong><span>줄표와 삽화를 정리하고 폰트를 통일한다.</span></span></li>
+    </ol>
+
+    <div class="body">
+      <p>여섯 단계는 한 번의 설정으로 끝난다. 그리고 그 설정이 <span class="hi">매주의 시간을 곱절로</span> 돌려준다.</p>
+    </div>
+  </section>
+
+  <!-- ====================== CH9 ====================== -->
+  <section class="leaf chapter" id="ch9">
+    <header class="ch-opener">
+      <div class="ch-no"><span class="lbl">한 걸음 더</span><span class="rule"></span></div>
+      <h2 class="ch-title">필자는 어떻게 작업하는가</h2>
+      <p class="ch-lead">지금까지는 챗 화면이 무대였다. 한 걸음 더 들어가면, 같은 원리를 훨씬 크게 굴리는 자리가 있다. CLI(명령줄) 레벨의 AI다.</p>
+    </header>
+
+    <div class="body opens">
+      <p>필자는 일상 작업의 상당 부분을 <b>Claude Code</b>나 <b>Codex</b> 같은 CLI 에이전트로 처리한다. 챗 UI가 한 번에 한 대화라면, CLI 도구는 프로젝트 폴더 전체를 맥락으로 읽고, 파일을 직접 만들고 고치며, 명령까지 실행한다. 앞에서 따로따로 다룬 Context·Harness·Loop를 한 환경에서 동시에 굴리는 셈이다.</p>
+    </div>
+
+    <p class="subhead">CLI 레벨: Claude Code와 Codex</p>
+    <div class="body">
+      <p>가장 큰 차이는 무대가 '대화'에서 '작업 환경'으로 바뀐다는 점이다. AI가 저장소(repo)를 통째로 읽으므로 맥락을 매번 붙여넣을 필요가 없고, 결과를 화면에 받아 적는 대신 파일로 바로 남긴다. 챗에서 익힌 맥락의 원리가 여기서는 환경 그 자체가 된다.</p>
+    </div>
+
+    <figure class="photo">
+      <div class="frame">
+        <img src="assets/cli-terminal.png" loading="lazy"
+          alt="여러 터미널 패널에서 Claude·Codex CLI 에이전트와 시스템 프로세스 모니터가 동시에 돌아가는 작업 화면" />
+      </div>
+      <figcaption class="figcap"><b></b>터미널에서 도는 CLI 에이전트. 대화가 아니라 작업 환경이 무대가 된다.</figcaption>
+    </figure>
+
+    <p class="subhead">Harness를 직접 만든다</p>
+    <div class="body">
+      <p>이 단계의 Harness는 앞 장의 맥락 블록을 한 단계 끌어올린 것이다. <span class="mono">AGENTS.md</span>나 <span class="mono">CLAUDE.md</span> 같은 맥락 파일에 규칙·금지·출력 형식을 적어 두고, 자주 쓰는 작업은 <b>스킬(skill)</b>로, 반복 점검은 <b>훅(hook)</b>으로 자동화한다. 한 번 만들어 두면 모든 세션이 같은 규칙을 따른다. 이 전자책을 다듬는 동안에도 디자인 규칙을 어긴 부분을 훅이 자동으로 잡아냈다.</p>
+      <p>필자가 실무에서 쓰는 문제 분석·변형 생성 도구도 개개인의 업무 환경에 최적화된 하네스의 일종이다. 맥락 파일과 규칙, 자주 쓰는 작업을 스킬로 묶어 두면 AI가 그 위에서 일관되게 작업을 이어 간다. 이를 통해 실제 업무 시간이 약 <b>12배 이상</b> 단축되었다.</p>
+    </div>
+
+    <figure class="photo">
+      <div class="frame">
+        <img src="assets/harness-files.png" loading="lazy"
+          alt="실전 프로젝트 하네스의 저장소 파일 구조 — 맥락·설계 문서와 소스·스크립트 폴더" />
+      </div>
+      <figcaption class="figcap"><b></b>맥락·설계 문서와 소스·스크립트로 짠 실전 하네스의 저장소 구조. 규칙을 한 번 정하면 매 세션이 그대로 따른다.</figcaption>
+    </figure>
+
+    <p class="subhead">Loop로 End-to-End까지</p>
+    <div class="body">
+      <p>여기에 Loop를 더하면 작업이 <b>End-to-End(E2E)</b>로 이어진다. 원문을 넣으면 초안 작성, 자체 점검(QA), 디자인, 최종 출력까지 AI가 단계별로 구동하고, 사람은 핵심 지점만 승인하거나(in the loop) 예외만 들여다본다(on the loop). 검수 결과는 그대로 흘려보내지 않고 다시 맥락 파일과 스킬에 적어 넣어, 다음 작업이 한층 정확해진다.</p>
+    </div>
+
+    <figure class="pipe">
+      <div class="pipe-row"><span class="stage">원문</span><span class="chain"><span class="fmt ai">.md</span><span class="to">→</span><span class="fmt">맥락 파일 적용</span></span></div>
+      <div class="pipe-row"><span class="stage">초안</span><span class="chain"><span class="fmt ai">AI 생성</span><span class="to">→</span><span class="fmt tool">스킬 호출</span></span></div>
+      <div class="pipe-row"><span class="stage">검수(QA)</span><span class="chain"><span class="fmt tool">훅 자동 점검</span><span class="to">→</span><span class="fmt">사람 승인</span></span></div>
+      <div class="pipe-row"><span class="stage">디자인</span><span class="chain"><span class="fmt ai">HTML/CSS</span><span class="to">→</span><span class="fmt tool">규칙 일관 적용</span></span></div>
+      <div class="pipe-row"><span class="stage">출력</span><span class="chain"><span class="fmt tool">PDF</span><span class="to">·</span><span class="fmt">피드백 → 맥락에 반영</span></span></div>
+    </figure>
+    <p class="figcap"><b></b>E2E: AI가 원문부터 출력까지 전 단계를 구동하고, 사람은 점검과 예외만 맡는다.</p>
+
+    <p class="aside-note">앞서 본 이 책의 제작 과정이 곧 그 작은 사례다. 챗에서 시작한 맥락의 원리를 CLI 환경으로 끌어올리면, <span class="hi">한 사람이 한 번의 설정으로</span> 출제부터 조판까지의 흐름 전체를 돌릴 수 있다.</p>
+
+    <p class="close-line">입력을 키우면,<br>AI는 그것을 <span class="x">곱한다.</span></p>
+
+    <ol class="principles">
+      <li><span class="pn"></span><span class="pt"><span class="stage">Prompt → Context</span><strong>맥락을 더하라</strong><span>'누구인 척'이 아니라 무엇을 아느냐가 결과를 바꾼다.</span></span></li>
+      <li><span class="pn"></span><span class="pt"><span class="stage">Harness</span><strong>환경을 저장하라</strong><span>한 번 설계해 두면 매번 재사용할 수 있다.</span></span></li>
+      <li><span class="pn"></span><span class="pt"><span class="stage">Loop</span><strong>피드백을 적어 넣어라</strong><span>버리지 않고 모을수록 매번 더 잘하는 구조가 된다.</span></span></li>
+    </ol>
+
+    <footer class="colophon">
+      <span><b>AI는 +가 아니라 ×다</b> · 영어 교사를 위한 AI 활용</span>
+      <span class="mk"><span class="bx">×</span>Chano T.</span>
+    </footer>
+  </section>
+
+</article>
+
+<!-- ====================== MINI TOC ====================== -->
+<nav class="minitoc" aria-label="현재 위치">
+  <a href="#ch1"><span class="dot"></span>곱셈의 논리</a>
+  <a href="#ch2"><span class="dot"></span>네 단계 지도</a>
+  <a href="#ch3"><span class="dot"></span>Prompt</a>
+  <a href="#ch4"><span class="dot"></span>Context</a>
+  <a href="#ch5"><span class="dot"></span>Harness</a>
+  <a href="#ch6"><span class="dot"></span>Loop</a>
+  <a href="#ch7"><span class="dot"></span>실전</a>
+  <a href="#ch8"><span class="dot"></span>지금 당장</a>
+  <a href="#ch9"><span class="dot"></span>한 걸음 더</a>
+</nav>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.minitoc a'));
+  var map={}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){ a.classList.remove('active'); });
+        var a=map[e.target.id]; if(a) a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+  [].slice.call(document.querySelectorAll('.chapter')).forEach(function(s){ io.observe(s); });
+})();
+</script>
+</body>
+</html>
