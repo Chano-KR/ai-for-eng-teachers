@@ -348,6 +348,8 @@ sup.fn{font-family:var(--sans);font-size:.62em;font-weight:700;color:var(--accen
   justify-content:space-between;gap:12px}
 .colophon b{color:var(--soft)}
 .colophon .mk .bx{color:var(--accent);font-weight:700;margin-right:.4em}
+.viewcount{max-width:var(--measure);margin:16px auto 0;text-align:center}
+.viewcount img{height:20px;vertical-align:middle;opacity:.8}
 
 /* ---------------- MINI TOC (wide reading aid, screen only) ---------------- */
 .minitoc{position:fixed;top:50%;left:max(14px,calc(50vw - 540px));transform:translateY(-50%);
@@ -367,7 +369,7 @@ sup.fn{font-family:var(--sans);font-size:.62em;font-weight:700;color:var(--accen
 @page:first{ @top-center{content:""} @bottom-center{content:""} }
 @media print{
   html,body{background:#fff}
-  .minitoc{display:none!important}
+  .minitoc,.viewcount{display:none!important}
   .book{max-width:none;margin:0;box-shadow:none;padding:0;background:#fff;font-size:11.2pt}
   .titlepage{min-height:auto;height:248mm;break-after:page}
   .toc{break-after:page}
@@ -848,6 +850,10 @@ sup.fn{font-family:var(--sans);font-size:.62em;font-weight:700;color:var(--accen
       <span><b>AI는 +가 아니라 ×다</b> · 영어 교사를 위한 AI 활용</span>
       <span class="mk"><span class="bx">×</span>Chano T.</span>
     </footer>
+
+    <p class="viewcount"><img
+      src="https://hits.sh/chano-kr.github.io/ai-for-eng-teachers.svg?style=flat-square&label=views&color=711922&labelColor=2b2b2b"
+      alt="조회수" loading="lazy" /></p>
   </section>
 
 </article>
