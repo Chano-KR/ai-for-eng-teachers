@@ -30,3 +30,7 @@ Open the live page and print to PDF (Ctrl/Cmd + P → paper size **A4** → *Sav
 ## Author
 
 Chano T.
+
+## Credits
+
+Designed and built with [Claude Code](https://claude.com/claude-code) (Claude Opus 4.8).
